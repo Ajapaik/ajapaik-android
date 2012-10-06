@@ -24,11 +24,12 @@ import android.widget.FrameLayout;
 
 import com.example.touch.TouchImageView;
 
+import ee.ajapaik.android.CameraActivity;
+import ee.ajapaik.android.ConfirmActivity;
 import ee.ajapaik.android.R;
 import ee.ajapaik.android.camera.CameraPreview;
 
 public class CameraFragment extends Fragment implements Camera.ShutterCallback, Camera.PictureCallback {
-
 	public static String TAG = "CameraFragment";
 	private Camera camera;
 	private FrameLayout previewSurfaceContainer;
@@ -173,6 +174,7 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 		}
 		f.mkdirs();
 		FileOutputStream fos = null;
+		String filePath = f.getAbsolutePath() + File.separator + filename + ".jpg";
 		try {
 			fos = new FileOutputStream(f.getAbsolutePath() + File.separator + filename + ".jpg");
 			fos.write(data);
@@ -187,6 +189,7 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 				} catch (IOException ioe) {}
 			}
 		}
+		ConfirmActivity.start(getActivity(), getActivity().getIntent().getIntExtra(CameraActivity.EXTRA_ID, -1), filePath);
 	}
 
 	@Override

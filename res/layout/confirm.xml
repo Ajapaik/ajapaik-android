@@ -10,23 +10,26 @@
 	<!-- picture -->
 	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="240dp"
+		android:layout_height="192dp"
 		android:background="@drawable/photo_frame">
-		<ImageView 
-			android:layout_height="match_parent"
+		<ImageView android:id="@+id/oldPic"
 			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			android:layout_margin="4dp"
 			android:scaleType="centerCrop"
 			android:src="@drawable/sample" />
 	</FrameLayout>
 	
-	<!-- title -->
-	<TextView
-		android:layout_margin="8dp"
+	<FrameLayout
 		android:layout_width="match_parent"
-		android:typeface="serif"
-		android:layout_height="96dp"
-		android:text="Vaade linnale Toomelt" />
+		android:layout_height="192dp"
+		android:background="@drawable/photo_frame">
+		<ImageView android:id="@+id/newPic"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_margin="4dp"
+			android:scaleType="centerCrop" />
+	</FrameLayout>
 	
 	<!-- spaace -->
 	<View
@@ -34,23 +37,16 @@
 		android:layout_height="0px"
 		android:layout_weight="0.8" />
 	
-	<!-- button -->
-	<Button android:id="@+id/btnRephoto"
+	<!-- buttons -->
+	<Button android:id="@+id/btnOk"
+		style="@style/GreenButton"
 		android:layout_gravity="center_horizontal"
 		android:layout_width="wrap_content"
 		android:layout_height="48dp"
-		android:background="@drawable/btn_green"
-		android:typeface="serif"
-		android:textColor="#fff"
-		android:shadowColor="#ff000000"
-		android:shadowDx="0"
-		android:shadowDy="-1"
-		android:shadowRadius="1.0"
 		android:text="Lisa ülepildistus" />
 	
 	<View
 		android:layout_width="match_parent"
 		android:layout_height="0px"
 		android:layout_weight="0.2" />
-	
 </LinearLayout>

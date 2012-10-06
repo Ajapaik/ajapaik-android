@@ -22,18 +22,20 @@
 		<uses-library android:name="com.google.android.maps" />
 		
 		<activity android:name=".MainActivity" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
 		</activity>
 		
 		<activity android:name=".DetailsActivity" android:screenOrientation="portrait">
 		</activity>
 		<activity android:name=".CameraActivity"
 			android:configChanges="keyboardHidden|orientation|screenSize"
-			android:screenOrientation="nosensor"
-			android:theme="@style/AppTheme_NoTitleBar">
-			<intent-filter >
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+			android:screenOrientation="nosensor">
+		</activity>
+		
+		<activity android:name=".ConfirmActivity" android:screenOrientation="portrait">
 		</activity>
 		
 	</application>

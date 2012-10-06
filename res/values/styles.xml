@@ -1,6 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-	<style name="AppTheme" parent="android:Theme.Light" />
-	<style name="AppTheme_NoTitleBar" parent="android:Theme.Light.NoTitleBar" />
-
+	<style name="AppTheme" parent="android:Theme.Light.NoTitleBar" />
+	<style name="GreenButton">
+		<item name="android:layout_gravity">center_horizontal</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">48dp</item>
+		<item name="android:background">@drawable/btn_green</item>
+		<item name="android:typeface">serif</item>
+		<item name="android:textColor">#fff</item>
+		<item name="android:shadowColor">#ff000000</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">-1</item>
+		<item name="android:shadowRadius">1.0</item>
+	</style>
 </resources>

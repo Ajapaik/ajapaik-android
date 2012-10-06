@@ -13,7 +13,7 @@ public class DetailsActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		getWindow().setBackgroundDrawableResource(R.drawable.bg);
 		setContentView(R.layout.main);
 		
 		if (savedInstanceState == null) {
