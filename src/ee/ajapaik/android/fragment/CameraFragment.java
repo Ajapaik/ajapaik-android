@@ -1,6 +1,5 @@
 package ee.ajapaik.android.fragment;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,7 +43,7 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 		super.onCreate(savedInstanceState);
 
 		format = new SimpleDateFormat();
-		format.applyPattern("dM_kms");
+		format.applyPattern("ddMM_kkmmss");
 	}
 
 	@Override
@@ -64,6 +63,20 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	public void onResume() {
 		super.onResume();
 		camera = Camera.open();
+		Camera.Parameters params = camera.getParameters();
+		params.setJpegQuality(90);
+		Log.d(TAG, "imageFormat=" + params.getPictureFormat());
+		for (Camera.Size sz : params.getSupportedPictureSizes()) {
+			Camera.Size currentSz = params.getPictureSize();
+			float ratio = (float)(currentSz.width) / (float)(currentSz.height);
+			if (sz.height * sz.width > currentSz.height * currentSz.width) {
+				if (Math.abs(ratio - 1.333f) < 0.01f || Math.abs(ratio - 0.75f) < 0.01f) {
+					params.setPictureSize(sz.width, sz.height);
+				}
+			}
+		}
+		Log.d(TAG, "Settled for " + params.getPictureSize().width + "x" + params.getPictureSize().height);
+		camera.setParameters(params);
 		setCameraDisplayOrientation(getActivity(), 0, camera);
 		CameraPreview prev = new CameraPreview(getActivity(), camera);
 		
@@ -154,31 +167,24 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	@Override
 	public void onPictureTaken(byte[] data, Camera camera) {
 		String filename = format.format(new Date());
-		File f = new File(Environment.DIRECTORY_PICTURES + File.separator + "ajapaik");
+		File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "ajapaik");
 		if (f.exists()) {
 			Log.w(TAG, "Going to overwrite picture at " + filename);
 		}
 		f.mkdirs();
 		FileOutputStream fos = null;
-		BufferedOutputStream bos = null;
 		try {
 			fos = new FileOutputStream(f.getAbsolutePath() + File.separator + filename + ".jpg");
-			bos = new BufferedOutputStream(fos, 8096); // 8K buffer
-			
-			int totalWritten = 0;
-			int written = 0;
-			while (bos.write(data))
+			fos.write(data);
+			Log.d(TAG, "Image written to " + f.getAbsolutePath() + File.separator + filename + ".jpg");
 		} catch (Exception e) {
 			Log.w(TAG, "Saving file failed :(");
+			e.printStackTrace();
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException ioe) {}
-				try {
-					bos.close();
-				} catch (IOException ioe) {}
-				}
 			}
 		}
 	}
