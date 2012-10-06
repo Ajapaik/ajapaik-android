@@ -21,12 +21,10 @@
 	
 		<uses-library android:name="com.google.android.maps" />
 		
-		<activity android:name=".MainActivity"
-			android:screenOrientation="portrait">
+		<activity android:name=".MainActivity" android:screenOrientation="portrait">
 		</activity>
 		
-		<activity android:name=".DetailsActivity"
-			android:screenOrientation="portrait">
+		<activity android:name=".DetailsActivity" android:screenOrientation="portrait">
 		</activity>
 		<activity android:name=".CameraActivity"
 			android:configChanges="keyboardHidden|orientation|screenSize"

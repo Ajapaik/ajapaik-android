@@ -1,11 +1,10 @@
 package ee.ajapaik.android.fragment;
 
-import com.example.touch.TouchImageView;
-
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.hardware.Camera.Parameters;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +12,9 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.example.touch.TouchImageView;
+
 import ee.ajapaik.android.R;
 import ee.ajapaik.android.camera.CameraPreview;
 
@@ -45,7 +47,6 @@ public class CameraFragment extends Fragment {
 		int height = getResources().getDisplayMetrics().heightPixels;
 
 		TouchImageView tiv = (TouchImageView) getView().findViewById(R.id.tiv);
-		tiv.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.sample));
 		
 //		System.out.println("rotation=" + rotation + " width=" + width + " height=" + height);
 		if (width < height) {
@@ -57,8 +58,34 @@ public class CameraFragment extends Fragment {
 			prev.setLayoutParams(new FrameLayout.LayoutParams((int)(1.333f * height), height));
 			tiv.setLayoutParams(new FrameLayout.LayoutParams((int)(1.333f * height), height));
 		}
+		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.sample);
+		if (bmp.getWidth() < bmp.getHeight()) {
+			// image port
+			if (width > height) {
+				// container land, rotate
+				bmp = rotate(bmp, 90.0f);
+			}
+		} else {
+			// image port
+			if (width < height) {
+				// container port, rotate
+				bmp = rotate(bmp, 90.0f);
+			}
+		}
+		tiv.setImageBitmap(bmp);
 		
 		previewSurfaceContainer.addView(prev);
+	}
+
+	private Bitmap rotate(Bitmap bmp, float f) {
+		Matrix mat = new Matrix();
+		mat.preRotate(90.0f);
+		Bitmap newbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mat, false);
+		if (bmp != newbmp) {
+			bmp.recycle();
+			bmp = newbmp;
+		}
+		return bmp;
 	}
 
 	@Override

@@ -55,17 +55,25 @@ public class TouchImageView extends ImageView {
 		super(context, attrs);
 		sharedConstructing(context);
 	}
+	
+	private float clamp(float value, float min, float max) {
+		return Math.min(Math.max(min, value), max);
+	}
 
 	private void sharedConstructing(Context context) {
 		super.setClickable(true);
 		this.context = context;
 		mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
-		matrix.setTranslate(1f, 1f);
 		m = new float[9];
 		setImageMatrix(matrix);
 		setScaleType(ScaleType.MATRIX);
+		
+		TouchImageView.this.setAlpha(128);
 
 		setOnTouchListener(new OnTouchListener() {
+			
+			private float alpha = 0.5f;
+			private float newAlpha = 0.5f;
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -84,12 +92,20 @@ public class TouchImageView extends ImageView {
 					break;
 				case MotionEvent.ACTION_MOVE:
 					if (mode == DRAG) {
-						//TODO opacity
+						float startVal = (start.y / (float)(v.getHeight()));
+						float curVal = (event.getY() / (float)(v.getHeight()));
+						float diff = curVal - startVal;
+						newAlpha = alpha + diff;
+						newAlpha = clamp(newAlpha, 0.0f, 1.0f);
+						System.out.println("alpha=" + alpha + " newAlpha=" + newAlpha + " startVal=" + startVal + " curVal=" + curVal);
+						//clamp
+						TouchImageView.this.setAlpha((int)(clamp(newAlpha*255.0f, 0.0f, 255.0f)));
 					}
 					break;
 
 				case MotionEvent.ACTION_UP:
 					mode = NONE;
+					alpha = newAlpha;
 					int xDiff = (int) Math.abs(curr.x - start.x);
 					int yDiff = (int) Math.abs(curr.y - start.y);
 					if (xDiff < CLICK && yDiff < CLICK)
@@ -139,74 +155,6 @@ public class TouchImageView extends ImageView {
 			return true;
 		}
 	}
-		
-
-//	private class ScaleListener extends
-//			ScaleGestureDetector.SimpleOnScaleGestureListener {
-//		@Override
-//		public boolean onScaleBegin(ScaleGestureDetector detector) {
-//			mode = ZOOM;
-//			return true;
-//		}
-//
-//		@Override
-//		public boolean onScale(ScaleGestureDetector detector) {
-//			float mScaleFactor = detector.getScaleFactor();
-//			float origScale = saveScale;
-//			saveScale *= mScaleFactor;
-//			if (saveScale > maxScale) {
-//				saveScale = maxScale;
-//				mScaleFactor = maxScale / origScale;
-//			} else if (saveScale < minScale) {
-//				saveScale = minScale;
-//				mScaleFactor = minScale / origScale;
-//			}
-//			right = width * saveScale - width
-//					- (2 * redundantXSpace * saveScale);
-//			bottom = height * saveScale - height
-//					- (2 * redundantYSpace * saveScale);
-//			if (origWidth * saveScale <= width
-//					|| origHeight * saveScale <= height) {
-//				matrix.postScale(mScaleFactor, mScaleFactor, width / 2,
-//						height / 2);
-////				if (mScaleFactor < 1) {
-////					matrix.getValues(m);
-////					float x = m[Matrix.MTRANS_X];
-////					float y = m[Matrix.MTRANS_Y];
-////					if (mScaleFactor < 1) {
-////						if (Math.round(origWidth * saveScale) < width) {
-////							if (y < -bottom)
-////								matrix.postTranslate(0, -(y + bottom));
-////							else if (y > 0)
-////								matrix.postTranslate(0, -y);
-////						} else {
-////							if (x < -right)
-////								matrix.postTranslate(-(x + right), 0);
-////							else if (x > 0)
-////								matrix.postTranslate(-x, 0);
-////						}
-////					}
-////				}
-//			} else {
-//				matrix.postScale(mScaleFactor, mScaleFactor,
-//						detector.getFocusX(), detector.getFocusY());
-////				matrix.getValues(m);
-////				float x = m[Matrix.MTRANS_X];
-////				float y = m[Matrix.MTRANS_Y];
-////				if (mScaleFactor < 1) {
-////					if (x < -right)
-////						matrix.postTranslate(-(x + right), 0);
-////					else if (x > 0)
-////						matrix.postTranslate(-x, 0);
-////					if (y < -bottom)
-////						matrix.postTranslate(0, -(y + bottom));
-////					else if (y > 0)
-////						matrix.postTranslate(0, -y);
-////				}
-//			}
-//			return true;
-//		}
-//	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -228,7 +176,7 @@ public class TouchImageView extends ImageView {
 		redundantYSpace /= (float) 2;
 		redundantXSpace /= (float) 2;
 
-//		matrix.postTranslate(redundantXSpace, redundantYSpace);
+		matrix.preTranslate(redundantXSpace, redundantYSpace);
 
 		origWidth = width - 2 * redundantXSpace;
 		origHeight = height - 2 * redundantYSpace;

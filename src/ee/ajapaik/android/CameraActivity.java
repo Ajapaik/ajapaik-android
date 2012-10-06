@@ -20,10 +20,8 @@ public class CameraActivity extends FragmentActivity {
 		setContentView(R.layout.main);
 
 		if (savedInstanceState == null) {
-			FragmentTransaction ft = getSupportFragmentManager()
-					.beginTransaction();
-			ft.add(R.id.mainContainer, CameraFragment.newInstance(),
-					CameraFragment.TAG);
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			ft.add(R.id.mainContainer, CameraFragment.newInstance(), CameraFragment.TAG);
 			ft.commit();
 		}
 	}

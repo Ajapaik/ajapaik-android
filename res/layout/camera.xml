@@ -11,8 +11,8 @@
 	
 		<com.example.touch.TouchImageView
 			android:id="@+id/tiv"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_width="250px"
+			android:layout_height="250px"
 			/>
 	</FrameLayout>
 	<Button
