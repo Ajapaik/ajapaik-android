@@ -60,6 +60,8 @@ public class TouchImageView extends ImageView {
 		return Math.min(Math.max(min, value), max);
 	}
 
+	private boolean scaleChanged = false;
+	
 	private void sharedConstructing(Context context) {
 		super.setClickable(true);
 		this.context = context;
@@ -77,6 +79,7 @@ public class TouchImageView extends ImageView {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				scaleChanged = false;
 				mScaleDetector.onTouchEvent(event);
 
 				matrix.getValues(m);
@@ -91,7 +94,7 @@ public class TouchImageView extends ImageView {
 					mode = DRAG;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					if (mode == DRAG) {
+					if (mode == DRAG && !scaleChanged) {
 						float startVal = (start.y / (float)(v.getHeight()));
 						float curVal = (event.getY() / (float)(v.getHeight()));
 						float diff = curVal - startVal;
@@ -152,6 +155,7 @@ public class TouchImageView extends ImageView {
 				mScaleFactor = minScale / origScale;
 			}
 			matrix.postScale(mScaleFactor, mScaleFactor, width / 2, height / 2);
+			scaleChanged = true;
 			return true;
 		}
 	}
