@@ -39,7 +39,7 @@ public class MapFragment extends Fragment implements LoaderCallbacks<PhotoItem[]
 		
 		if (savedInstanceState == null) {
 			mapc.setCenter(new GeoPoint(58383333, 26716667));
-			mapc.setZoom(19);
+			mapc.setZoom(18);
 		}
 		
 		myLoc = new MyLocationOverlay(getActivity(), map);
