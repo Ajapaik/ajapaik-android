@@ -17,7 +17,7 @@
 
 	<application
 		android:name=".AjapaikApplication"
-		android:icon="@drawable/ic_launcher"
+		android:icon="@drawable/ajapaik_icon"
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme"
 		android:largeHeap="true">
