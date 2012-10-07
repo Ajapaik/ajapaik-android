@@ -64,6 +64,9 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 		v.findViewById(R.id.photoButton).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (camera == null) {
+					return;
+				}
 				camera.takePicture(CameraFragment.this, null, CameraFragment.this);
 			}
 		});
@@ -74,6 +77,9 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	public void onResume() {
 		super.onResume();
 		camera = Camera.open();
+		if (camera == null) {
+			return;
+		}
 		Camera.Parameters params = camera.getParameters();
 		params.setJpegQuality(90);
 		Log.d(TAG, "imageFormat=" + params.getPictureFormat());
@@ -151,6 +157,9 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	@Override
 	public void onPause() {
 		super.onPause();
+		if (camera == null) {
+			return;
+		}
 		camera.stopPreview();
 		previewSurfaceContainer.removeAllViews();
 		camera.release();

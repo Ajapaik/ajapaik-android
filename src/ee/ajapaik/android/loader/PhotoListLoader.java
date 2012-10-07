@@ -34,7 +34,7 @@ public class PhotoListLoader extends CachingAsyncLoader<PhotoItem[]> {
 		InputStream is = null;
 		try {
 //			is = (new URL("http://www.ajapaik.ee/kaart/?city=2")).openStream();
-			is = (new URL("http://api.ajapaik.ee/?action=photo&latitude=58.376713&longitude=26.726168")).openStream();
+			is = (new URL("http://api.ajapaik.ee/?action=photo&latitude=58.378195&longitude=26.714388")).openStream();
 			is = new BufferedInputStream(is, 8096);
 			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 			StringBuilder sb = new StringBuilder();

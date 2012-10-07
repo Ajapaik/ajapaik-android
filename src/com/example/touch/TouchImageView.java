@@ -41,6 +41,9 @@ public class TouchImageView extends ImageView {
 	static final int CLICK = 3;
 	float saveScale = 1f;
 	float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
+	
+	private float alpha = 0.5f;
+	private float newAlpha = 0.5f;
 
 	ScaleGestureDetector mScaleDetector;
 
@@ -73,9 +76,6 @@ public class TouchImageView extends ImageView {
 		TouchImageView.this.setAlpha(128);
 
 		setOnTouchListener(new OnTouchListener() {
-			
-			private float alpha = 0.5f;
-			private float newAlpha = 0.5f;
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -147,6 +147,23 @@ public class TouchImageView extends ImageView {
 				}
 			}
 		}, 50);
+	}
+	
+	private void animateToAlpha(final int diff, final int dest, final int frameDelay) {
+		postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				int start = (int)((alpha) * 255);
+				if ((diff > 0 && dest > start) || (diff < 0 && dest < start)) {
+					TouchImageView.this.setAlpha(dest + diff);
+					alpha = (float)(dest + diff) / 255.0f;
+					postDelayed(this, 50);
+				} else {
+					TouchImageView.this.setAlpha(dest);
+					alpha = (float)(dest) / 255.0f;
+				}
+			}
+		}, frameDelay);
 	}
 
 	public void setMaxZoom(float x) {

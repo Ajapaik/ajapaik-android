@@ -15,6 +15,7 @@ import com.example.android.bitmapfun.util.ImageFetcher;
 import ee.ajapaik.android.CameraActivity;
 import ee.ajapaik.android.DetailsActivity;
 import ee.ajapaik.android.R;
+import ee.ajapaik.android.ViewPhotoActivity;
 
 public class PhotoDetailsFragment extends Fragment {
 	
@@ -39,6 +40,13 @@ public class PhotoDetailsFragment extends Fragment {
 		final int id = getActivity().getIntent().getIntExtra(DetailsActivity.EXTRA_ID, -1);
 		
 		imageFetcher.loadImage(String.format("http://www.ajapaik.ee/foto_url/%d/", id), (ImageView) v.findViewById(R.id.oldPic));
+		
+		v.findViewById(R.id.oldPic).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ViewPhotoActivity.start(getActivity(), id);
+			}
+		});
 		
 		v.findViewById(R.id.btnRephoto).setOnClickListener(new OnClickListener() {
 			@Override

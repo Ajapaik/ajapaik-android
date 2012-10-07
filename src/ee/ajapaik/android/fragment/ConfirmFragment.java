@@ -17,6 +17,7 @@ import org.apache.http.params.HttpParams;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.android.bitmapfun.util.ImageFetcher;
 
+import ee.ajapaik.android.AjapaikApplication;
 import ee.ajapaik.android.ConfirmActivity;
 import ee.ajapaik.android.DetailsActivity;
 import ee.ajapaik.android.MainActivity;
@@ -127,6 +129,13 @@ public class ConfirmFragment extends Fragment {
 				entity.addPart("year", new StringBody(String.valueOf(date.getYear())));
 				entity.addPart("month", new StringBody(String.valueOf(date.getMonth())));
 				entity.addPart("day", new StringBody(String.valueOf(date.getDay())));
+				
+				// lets hope its recent enough?
+				Location loc = AjapaikApplication.loc;
+				if (loc != null && System.currentTimeMillis() - loc.getTime() < 30000L) {
+					entity.addPart("lat", new StringBody(String.valueOf(loc.getLatitude())));
+					entity.addPart("lon", new StringBody(String.valueOf(loc.getLongitude())));
+				}
 				
 				post.setEntity(entity);
 				httpClient.execute(post);

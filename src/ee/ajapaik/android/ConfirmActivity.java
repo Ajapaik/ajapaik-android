@@ -30,4 +30,16 @@ public class ConfirmActivity extends FragmentActivity {
 		i.putExtra(EXTRA_FILE, filePath);
 		context.startActivity(i);
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AjapaikApplication.increaseGpsRefCount(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		AjapaikApplication.decreaseGpsRefCount(this);
+	}
 }

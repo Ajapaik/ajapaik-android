@@ -25,4 +25,16 @@ public class MainActivity extends FragmentActivity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AjapaikApplication.increaseGpsRefCount(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		AjapaikApplication.decreaseGpsRefCount(this);
+	}
 }

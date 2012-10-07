@@ -41,7 +41,8 @@ public class MapFragment extends Fragment implements LoaderCallbacks<PhotoItem[]
 		mapc = map.getController();
 		
 		if (savedInstanceState == null) {
-			mapc.setCenter(new GeoPoint(58383333, 26716667));
+			// 58222853,26389038
+			mapc.setCenter(new GeoPoint(58378195, 26714388));
 			
 			LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 			Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);

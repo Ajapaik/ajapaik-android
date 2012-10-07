@@ -33,4 +33,16 @@ public class CameraActivity extends FragmentActivity {
 		i.putExtra(EXTRA_ID, id);
 		context.startActivity(i);
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AjapaikApplication.increaseGpsRefCount(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		AjapaikApplication.decreaseGpsRefCount(this);
+	}
 }
