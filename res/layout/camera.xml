@@ -15,8 +15,15 @@
 			android:layout_height="250px"
 			/>
 	</FrameLayout>
-	<Button android:id="@+id/photoButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="click" />
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="0px"
+		android:layout_weight="1">
+		<ImageView android:id="@+id/photoButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_camera"
+			android:layout_gravity="center"
+			 />
+	</FrameLayout>
 </LinearLayout>

@@ -134,6 +134,19 @@ public class TouchImageView extends ImageView {
 			bmWidth = bm.getWidth();
 			bmHeight = bm.getHeight();
 		}
+		// animate to 0.5f, 10fps
+		final int[] counter = {0};
+		TouchImageView.this.setAlpha(0);
+		postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				TouchImageView.this.setAlpha(Math.min(12 * (counter[0] + 1), 128));
+				counter[0]++;
+				if (counter[0] < 10) {
+					postDelayed(this, 50);
+				}
+			}
+		}, 50);
 	}
 
 	public void setMaxZoom(float x) {
@@ -180,7 +193,8 @@ public class TouchImageView extends ImageView {
 		redundantYSpace /= (float) 2;
 		redundantXSpace /= (float) 2;
 
-		matrix.preTranslate(redundantXSpace, redundantYSpace);
+		System.out.println("redundantXSpace: " + redundantXSpace + ", redundantYspace: " + redundantYSpace);
+		matrix.postTranslate(redundantXSpace, redundantYSpace);
 
 		origWidth = width - 2 * redundantXSpace;
 		origHeight = height - 2 * redundantYSpace;

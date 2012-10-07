@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 
 public class DetailsActivity extends FragmentActivity {
 	public final static String EXTRA_ID = "ee.ajapaik.android.extra.ID";
+	public final static String EXTRA_DESC = "ee.ajapaik.android.extra.DESC";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +24,10 @@ public class DetailsActivity extends FragmentActivity {
 		}
 	}
 	
-	public static void start(Context context, int id) {
+	public static void start(Context context, int id, String description) {
 		Intent i = new Intent(context, DetailsActivity.class);
 		i.putExtra(EXTRA_ID, id);
+		i.putExtra(EXTRA_DESC, description);
 		context.startActivity(i);
 	}
 }

@@ -8,12 +8,14 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.RotateDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -21,19 +23,25 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import com.example.android.bitmapfun.util.ImageFetcher;
 import com.example.touch.TouchImageView;
 
 import ee.ajapaik.android.CameraActivity;
 import ee.ajapaik.android.ConfirmActivity;
 import ee.ajapaik.android.R;
 import ee.ajapaik.android.camera.CameraPreview;
+import ee.ajapaik.android.loader.BitmapLoader;
 
-public class CameraFragment extends Fragment implements Camera.ShutterCallback, Camera.PictureCallback {
+public class CameraFragment extends Fragment implements Camera.ShutterCallback, Camera.PictureCallback, LoaderCallbacks<Bitmap> {
 	public static String TAG = "CameraFragment";
 	private Camera camera;
 	private FrameLayout previewSurfaceContainer;
 	private SimpleDateFormat format;
+	
+	private boolean containerLand = true;
+	private ImageFetcher imageFetcher;
 
 	public static Fragment newInstance() {
 		return new CameraFragment();
@@ -81,7 +89,7 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 		setCameraDisplayOrientation(getActivity(), 0, camera);
 		CameraPreview prev = new CameraPreview(getActivity(), camera);
 		
-		int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+//		int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
 		int width = getResources().getDisplayMetrics().widthPixels;
 		int height = getResources().getDisplayMetrics().heightPixels;
 
@@ -92,31 +100,42 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 			// port
 			prev.setLayoutParams(new FrameLayout.LayoutParams(width, (int)(1.333f * width)));
 			tiv.setLayoutParams(new FrameLayout.LayoutParams(width, (int)(1.333f * width)));
+			imageFetcher = new ImageFetcher(getActivity(), width, (int)(1.333f * width), true);
 		} else {
 			// land
 			prev.setLayoutParams(new FrameLayout.LayoutParams((int)(1.333f * height), height));
 			tiv.setLayoutParams(new FrameLayout.LayoutParams((int)(1.333f * height), height));
+			imageFetcher = new ImageFetcher(getActivity(), (int)(1.333f * height), height, true);
 		}
-		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.sample);
-		if (bmp.getWidth() < bmp.getHeight()) {
-			// image port
-			if (width > height) {
-				// container land, rotate
-				bmp = rotate(bmp, 90.0f);
-			}
-		} else {
-			// image port
-			if (width < height) {
-				// container port, rotate
-				bmp = rotate(bmp, 90.0f);
-			}
-		}
-		tiv.setImageBitmap(bmp);
+		
+		final int id = getActivity().getIntent().getIntExtra(CameraActivity.EXTRA_ID, -1);
+		getLoaderManager().initLoader(0, BitmapLoader.args(id, width > height), this);
+		
+		containerLand = width > height;
+		
+//		final int id = getActivity().getIntent().getIntExtra(CameraActivity.EXTRA_ID, -1);
+		
+//		imageFetcher.loadImage(String.format("http://www.ajapaik.ee/foto_url/%d/", id), tiv);
+//		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.sample);
+//		if (bmp.getWidth() < bmp.getHeight()) {
+//			// image port
+//			if (width > height) {
+//				// container land, rotate
+//				bmp = rotate(bmp, 90.0f);
+//			}
+//		} else {
+//			// image land
+//			if (width < height) {
+//				// container port, rotate
+//				bmp = rotate(bmp, 90.0f);
+//			}
+//		}
+//		tiv.setImageBitmap(bmp);
 		
 		previewSurfaceContainer.addView(prev);
 	}
 
-	private Bitmap rotate(Bitmap bmp, float f) {
+	private static Bitmap rotate(Bitmap bmp, float f) {
 		Matrix mat = new Matrix();
 		mat.preRotate(90.0f);
 		Bitmap newbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mat, false);
@@ -195,6 +214,31 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	@Override
 	public void onShutter() {
 		// make the shutter sound
+	}
+
+	@Override
+	public Loader<Bitmap> onCreateLoader(int arg0, Bundle arg1) {
+		return BitmapLoader.newInstance(getActivity(), arg1);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Bitmap> arg0, Bitmap bmp) {
+		boolean rotated = (containerLand ^ (bmp.getHeight() < bmp.getWidth()));
+		if (rotated) {
+			bmp = rotate(bmp, 90.0f);
+		}
+		TouchImageView tiv = (TouchImageView) getView().findViewById(R.id.tiv);
+		if (tiv != null) {
+			tiv.setImageBitmap(bmp);
+		}
+		ImageView photoButton = (ImageView) getView().findViewById(R.id.photoButton);
+		photoButton.setImageResource(rotated ? R.drawable.btn_camera_rotated : R.drawable.btn_camera);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Bitmap> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

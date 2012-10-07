@@ -2,6 +2,7 @@ package ee.ajapaik.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ public class CameraActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setBackgroundDrawable(new ColorDrawable(0xff000000));
 		setContentView(R.layout.main_noactionbar);
 
 		if (savedInstanceState == null) {

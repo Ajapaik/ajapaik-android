@@ -32,11 +32,11 @@ public class PhotoItemsOverlay extends ItemizedOverlay<PhotoItem> {
 	
 	@Override
 	protected boolean onTap(int pos) {
-		listener.onTapPhoto(items[pos].getId());
+		listener.onTapPhoto(items[pos]);
 		return true;
 	}
 	
 	public interface Listener {
-		public void onTapPhoto(int id);
+		public void onTapPhoto(PhotoItem item);
 	}
 }

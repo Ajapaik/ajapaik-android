@@ -39,10 +39,11 @@ public class MapFragment extends Fragment implements LoaderCallbacks<PhotoItem[]
 		
 		if (savedInstanceState == null) {
 			mapc.setCenter(new GeoPoint(58383333, 26716667));
-			mapc.setZoom(18);
+			mapc.setZoom(19);
 		}
 		
 		myLoc = new MyLocationOverlay(getActivity(), map);
+		map.getOverlays().add(myLoc);
 		
 		getLoaderManager().initLoader(0, null, this);
 		
@@ -82,8 +83,8 @@ public class MapFragment extends Fragment implements LoaderCallbacks<PhotoItem[]
 	}
 
 	@Override
-	public void onTapPhoto(int id) {
-		Log.d(TAG, "tapped " + id);
-		DetailsActivity.start(getActivity(), id);
+	public void onTapPhoto(PhotoItem item) {
+		Log.d(TAG, "tapped " + item.getId());
+		DetailsActivity.start(getActivity(), item.getId(), item.getDescription());
 	}
 }

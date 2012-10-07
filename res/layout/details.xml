@@ -12,7 +12,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="240dp"
 		android:background="@drawable/photo_frame">
-		<ImageView 
+		<ImageView android:id="@+id/oldPic"
 			android:layout_height="match_parent"
 			android:layout_width="match_parent"
 			android:layout_margin="4dp"
@@ -21,12 +21,11 @@
 	</FrameLayout>
 	
 	<!-- title -->
-	<TextView
+	<TextView android:id="@+id/desc"
 		android:layout_margin="8dp"
 		android:layout_width="match_parent"
 		android:typeface="serif"
-		android:layout_height="96dp"
-		android:text="Vaade linnale Toomelt" />
+		android:layout_height="96dp" />
 	
 	<!-- spaace -->
 	<View
