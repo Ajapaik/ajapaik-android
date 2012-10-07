@@ -8,6 +8,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.RotateDrawable;
 import android.hardware.Camera;
@@ -41,6 +42,7 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	private SimpleDateFormat format;
 	
 	private boolean containerLand = true;
+	private boolean rotated = false;
 	private ImageFetcher imageFetcher;
 
 	public static Fragment newInstance() {
@@ -138,12 +140,12 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 	private static Bitmap rotate(Bitmap bmp, float f) {
 		Matrix mat = new Matrix();
 		mat.preRotate(90.0f);
-		Bitmap newbmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mat, false);
-		if (bmp != newbmp) {
-			bmp.recycle();
-			bmp = newbmp;
-		}
-		return bmp;
+		return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mat, false);
+//		if (bmp != newbmp) {
+//			bmp.recycle();
+//			bmp = newbmp;
+//		}
+//		return bmp;
 	}
 
 	@Override
@@ -195,9 +197,18 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 		FileOutputStream fos = null;
 		String filePath = f.getAbsolutePath() + File.separator + filename + ".jpg";
 		try {
-			fos = new FileOutputStream(f.getAbsolutePath() + File.separator + filename + ".jpg");
+			fos = new FileOutputStream(filePath);
 			fos.write(data);
-			Log.d(TAG, "Image written to " + f.getAbsolutePath() + File.separator + filename + ".jpg");
+			Log.d(TAG, "Image written to " + filePath);
+			
+			if (!rotated) {
+				// we need to rotate the port pics
+				Bitmap bmp = BitmapFactory.decodeFile(filePath);
+				bmp = rotate(bmp, 90.0f);
+				fos = new FileOutputStream(filePath);
+				bmp.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+				bmp.recycle();
+			}
 		} catch (Exception e) {
 			Log.w(TAG, "Saving file failed :(");
 			e.printStackTrace();
@@ -223,7 +234,7 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 
 	@Override
 	public void onLoadFinished(Loader<Bitmap> arg0, Bitmap bmp) {
-		boolean rotated = (containerLand ^ (bmp.getHeight() < bmp.getWidth()));
+		rotated = (containerLand ^ (bmp.getHeight() < bmp.getWidth()));
 		if (rotated) {
 			bmp = rotate(bmp, 90.0f);
 		}
