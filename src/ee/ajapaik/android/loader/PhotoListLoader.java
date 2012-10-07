@@ -53,7 +53,7 @@ public class PhotoListLoader extends CachingAsyncLoader<PhotoItem[]> {
 				double longitude = Double.parseDouble(obj.optString("lon"));
 				double latitude = Double.parseDouble(obj.optString("lat"));
 				String description = obj.optString("description");
-				boolean rephotoed = false;
+				boolean rephotoed = Integer.valueOf(obj.optString("rephoto_count")) != 0;
 				ret[i] = new PhotoItem(latitude, longitude, id, rephotoed ? dRephotoed : dNotRephotoed, description);
 			}
 			return ret;
