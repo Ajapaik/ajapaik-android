@@ -78,8 +78,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		Camera.Size result = null;
 		Camera.Parameters p = mCamera.getParameters();
 		
-		System.out.println("width=" + width + " height=" + height);
-		
 		for (Camera.Size size : p.getSupportedPreviewSizes()) {
 			if (size.width <= width && size.height <= height) {
 				if (result == null) {

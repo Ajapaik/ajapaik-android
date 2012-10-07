@@ -100,7 +100,7 @@ public class TouchImageView extends ImageView {
 						float diff = curVal - startVal;
 						newAlpha = alpha + diff;
 						newAlpha = clamp(newAlpha, 0.0f, 1.0f);
-						System.out.println("alpha=" + alpha + " newAlpha=" + newAlpha + " startVal=" + startVal + " curVal=" + curVal);
+//						System.out.println("alpha=" + alpha + " newAlpha=" + newAlpha + " startVal=" + startVal + " curVal=" + curVal);
 						//clamp
 						TouchImageView.this.setAlpha((int)(clamp(newAlpha*255.0f, 0.0f, 255.0f)));
 					}

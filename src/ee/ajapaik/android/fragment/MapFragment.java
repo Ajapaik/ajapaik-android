@@ -1,5 +1,8 @@
 package ee.ajapaik.android.fragment;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -39,10 +42,23 @@ public class MapFragment extends Fragment implements LoaderCallbacks<PhotoItem[]
 		
 		if (savedInstanceState == null) {
 			mapc.setCenter(new GeoPoint(58383333, 26716667));
+			
+			LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+			Location loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (loc != null && System.currentTimeMillis() - loc.getTime() < 60*60*1000L) {
+				Log.d(TAG, "loc changed to " + loc.getLatitude() + "/" + loc.getLongitude());
+				mapc.setCenter(new GeoPoint((int)(loc.getLatitude() * 1E6), (int)(loc.getLongitude() * 1E6)));
+			}
 			mapc.setZoom(18);
 		}
 		
 		myLoc = new MyLocationOverlay(getActivity(), map);
+		myLoc.runOnFirstFix(new Runnable() {
+			@Override
+			public void run() {
+				mapc.animateTo(myLoc.getMyLocation());
+			}
+		});
 		map.getOverlays().add(myLoc);
 		
 		getLoaderManager().initLoader(0, null, this);
