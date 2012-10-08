@@ -70,7 +70,7 @@ public class ConfirmFragment extends Fragment {
 		
 		// grab the file. ui thread, don't care.
 		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inSampleSize = 2;
+		opts.inSampleSize = 4;
 		Bitmap bmp = BitmapFactory.decodeFile(filePath, opts);
 		
 		((ImageView) v.findViewById(R.id.newPic)).setImageBitmap(bmp);

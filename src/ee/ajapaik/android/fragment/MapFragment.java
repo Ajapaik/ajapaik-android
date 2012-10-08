@@ -90,7 +90,7 @@ public class MapFragment extends Fragment implements LoaderCallbacks<PhotoItem[]
 	public void onLoadFinished(Loader<PhotoItem[]> loader, PhotoItem[] results) {
 		PhotoItemsOverlay overlay = new PhotoItemsOverlay(this, results);
 		
-		map.getOverlays().add(0, overlay);
+		map.getOverlays().add(overlay);
 		map.invalidate();
 	}
 

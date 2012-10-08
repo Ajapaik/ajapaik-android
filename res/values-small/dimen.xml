@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<dimen name="detailsPhotoHeight">192dp</dimen>
-	<dimen name="confirmPhotoHeight">144dp</dimen>
+	<dimen name="confirmPhotoHeight">160dp</dimen>
 </resources>

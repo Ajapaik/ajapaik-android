@@ -10,7 +10,7 @@
 	<!-- picture -->
 	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="192dp"
+		android:layout_height="@dimen/confirmPhotoHeight"
 		android:background="@drawable/photo_frame">
 		<ImageView android:id="@+id/oldPic"
 			android:layout_width="match_parent"
@@ -22,7 +22,7 @@
 	
 	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="192dp"
+		android:layout_height="@dimen/confirmPhotoHeight"
 		android:background="@drawable/photo_frame">
 		<ImageView android:id="@+id/newPic"
 			android:layout_width="match_parent"
