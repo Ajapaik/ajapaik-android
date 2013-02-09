@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.bitmapfun.util;
+package ee.ajapaik.android.external.bitmaputil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

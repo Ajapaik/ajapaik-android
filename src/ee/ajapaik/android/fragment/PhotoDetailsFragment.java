@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.bitmapfun.util.ImageFetcher;
+import ee.ajapaik.android.external.bitmaputil.ImageFetcher;
 
 import ee.ajapaik.android.CameraActivity;
 import ee.ajapaik.android.DetailsActivity;

@@ -1,6 +1,6 @@
 package ee.ajapaik.android.fragment;
 
-import com.example.touch.TouchImageView2;
+import ee.ajapaik.android.external.touch.TouchImageView2;
 
 import ee.ajapaik.android.R;
 import ee.ajapaik.android.ViewPhotoActivity;

@@ -1,40 +1,47 @@
 package ee.ajapaik.android.loader;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ee.ajapaik.android.R;
-import ee.ajapaik.android.map.PhotoItem;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-public class PhotoListLoader extends CachingAsyncLoader<PhotoItem[]> {
+public class PhotoListLoader extends CachingAsyncLoader<MarkerOptions[]> {
 	
 	private static final String TAG = "PHOTOLOADER";
-	
-	private Drawable dRephotoed, dNotRephotoed;
+	public static final String ARG_LATITUDE = "latitude";
+	public static final String ARG_LONGITUDE = "longitude";
 
-	public PhotoListLoader(Context context) {
+	private final double latitude, longitude;
+	private BitmapDescriptor dRephotoed, dNotRephotoed;
+
+	public PhotoListLoader(Context context, double latitude, double longitude) {
 		super(context);
-		dRephotoed = context.getResources().getDrawable(R.drawable.icon_camera_hot);
-		dNotRephotoed = context.getResources().getDrawable(R.drawable.icon_camera);
+		this.latitude = latitude;
+		this.longitude = longitude;
+		dRephotoed = BitmapDescriptorFactory.fromResource(R.drawable.icon_camera_hot);
+		dNotRephotoed = BitmapDescriptorFactory.fromResource(R.drawable.icon_camera);
 	}
 
 	@Override
-	public PhotoItem[] loadInBackground() {
+	public MarkerOptions[] loadInBackground() {
 		InputStream is = null;
 		try {
-//			is = (new URL("http://www.ajapaik.ee/kaart/?city=2")).openStream();
-			is = (new URL("http://api.ajapaik.ee/?action=photo&latitude=58.378195&longitude=26.714388")).openStream();
+			URL url = new URL(String.format("http://api.ajapaik.ee/api-v1.php?action=photo&latitude=%.6f&longitude=%.6f", latitude, longitude));
+			Log.d(TAG, "Firing request to " + url);
+			is = url.openStream();
 			is = new BufferedInputStream(is, 8096);
 			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 			StringBuilder sb = new StringBuilder();
@@ -46,7 +53,7 @@ public class PhotoListLoader extends CachingAsyncLoader<PhotoItem[]> {
 			}
 			JSONObject result = new JSONObject(sb.toString());
 			JSONArray items = result.getJSONArray("result");
-			PhotoItem[] ret = new PhotoItem[items.length()];
+			MarkerOptions[] ret = new MarkerOptions[items.length()];
 			for (int i = 0; i < items.length(); i++) {
 				JSONObject obj = items.getJSONObject(i);
 				int id = Integer.parseInt(obj.optString("id"));
@@ -54,29 +61,12 @@ public class PhotoListLoader extends CachingAsyncLoader<PhotoItem[]> {
 				double latitude = Double.parseDouble(obj.optString("lat"));
 				String description = obj.optString("description");
 				boolean rephotoed = Integer.valueOf(obj.optString("rephoto_count")) != 0;
-				ret[i] = new PhotoItem(latitude, longitude, id, rephotoed ? dRephotoed : dNotRephotoed, description);
+				ret[i] = new MarkerOptions()
+					.icon(rephotoed ? dRephotoed : dNotRephotoed)
+					.position(new LatLng(latitude, longitude))
+					.title(description).snippet(String.valueOf(id)); // oh man, a hack
 			}
 			return ret;
-//			BufferedReader reader = new BufferedReader(isr);
-//			String s = reader.readLine();
-//			while (s != null) {
-//				if (s.contains("geotagged_photos=")) {
-//					int start = s.indexOf('=') + 1;
-//					int end = s.lastIndexOf(';') + 1;
-//					JSONArray arr = new JSONArray(s.substring(start, end));
-//					PhotoItem[] ret = new PhotoItem[arr.length()];
-//					for (int i = 0; i < ret.length; i++) {
-//						JSONArray photoArr = arr.getJSONArray(i);
-//						int id = photoArr.getInt(0);
-//						double longitude = photoArr.getDouble(1);
-//						double latitude = photoArr.getDouble(2);
-//						boolean rephotoed = photoArr.getBoolean(3);
-//						ret[i] = new PhotoItem(latitude, longitude, id, rephotoed ? dRephotoed : dNotRephotoed);
-//					}
-//					return ret;
-//				}
-//				s = reader.readLine();
-//			}
 		} catch (IOException ioe) {
 			Log.w(TAG, "blerg", ioe);
 		} catch (JSONException e) {
@@ -88,7 +78,7 @@ public class PhotoListLoader extends CachingAsyncLoader<PhotoItem[]> {
 				} catch (IOException ioe) {}
 			}
 		}
-		return new PhotoItem[0];
+		return new MarkerOptions[0];
 	}
 
 }

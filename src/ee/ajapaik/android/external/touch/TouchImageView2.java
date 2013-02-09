@@ -6,7 +6,7 @@
  * Extends Android ImageView to include pinch zooming and panning.
  */
 
-package com.example.touch;
+package ee.ajapaik.android.external.touch;
 
 import android.content.Context;
 import android.graphics.Bitmap;

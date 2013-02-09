@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.bitmapfun.util;
+package ee.ajapaik.android.external.bitmaputil;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -30,7 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.android.bitmapfun.util.ImageFetcher;
+import ee.ajapaik.android.external.bitmaputil.ImageFetcher;
 
 import ee.ajapaik.android.AjapaikApplication;
 import ee.ajapaik.android.ConfirmActivity;

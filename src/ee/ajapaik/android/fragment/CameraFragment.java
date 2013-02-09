@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.RotateDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,8 +25,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.example.android.bitmapfun.util.ImageFetcher;
-import com.example.touch.TouchImageView;
+import ee.ajapaik.android.external.bitmaputil.ImageFetcher;
+import ee.ajapaik.android.external.touch.TouchImageView;
 
 import ee.ajapaik.android.CameraActivity;
 import ee.ajapaik.android.ConfirmActivity;
