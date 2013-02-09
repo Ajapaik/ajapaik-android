@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import com.facebook.Session;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -82,12 +83,17 @@ public class ConfirmFragment extends Fragment {
 		v.findViewById(R.id.btnOk).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Uploader uploader = new Uploader();
-				uploader.execute();
+				// TODO show diag
+				((ConfirmActivity) getActivity()).fbLogin();
 			}
 		});
 		
 		return v;
+	}
+
+	public void onFbLoginComplete() {
+		Uploader uploader = new Uploader();
+		uploader.execute();
 	}
 	
 	private class Uploader extends AsyncTask<Void, Long, Void> implements Listener {
@@ -137,7 +143,6 @@ public class ConfirmFragment extends Fragment {
 				float sf = getActivity().getIntent().getFloatExtra(ConfirmActivity.EXTRA_SCALE_FACTOR, 1.0f);
 				entity.addPart("scale_factor", new StringBody(String.valueOf(sf)));
 				Log.d(TAG, "scale factor:" + sf);
-
 				
 				// lets hope its recent enough?
 				Location loc = AjapaikApplication.loc;
@@ -154,6 +159,12 @@ public class ConfirmFragment extends Fragment {
 					Log.d(TAG, "yaw: " + orientation[0]);
 					Log.d(TAG, "pitch: " + orientation[1]);
 					Log.d(TAG, "roll: " + orientation[2]);
+				}
+
+				Session sess = Session.getActiveSession();
+				if (sess != null && sess.isOpened()) {
+					entity.addPart("fb_access_token", new StringBody(sess.getAccessToken()));
+					entity.addPart("fb_application_id", new StringBody(sess.getApplicationId()));
 				}
 
 				post.setEntity(entity);

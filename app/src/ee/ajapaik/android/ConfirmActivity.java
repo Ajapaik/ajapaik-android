@@ -1,5 +1,8 @@
 package ee.ajapaik.android;
 
+import android.support.v4.app.Fragment;
+import com.facebook.Session;
+import com.facebook.SessionState;
 import ee.ajapaik.android.fragment.ConfirmFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -43,5 +46,27 @@ public class ConfirmActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		AjapaikApplication.decreaseGpsRefCount(this);
+	}
+
+	public void fbLogin() {
+		// start Facebook Login
+		Session.openActiveSession(this, true, new Session.StatusCallback() {
+			// callback when session changes state
+			@Override
+			public void call(Session session, SessionState state, Exception exception) {
+				if (session.isOpened()) {
+					Fragment frag = getSupportFragmentManager().findFragmentByTag(ConfirmFragment.TAG);
+					if (frag != null && frag instanceof ConfirmFragment) {
+						((ConfirmFragment) frag).onFbLoginComplete();
+					}
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 	}
 }
