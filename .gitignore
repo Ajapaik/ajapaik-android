@@ -17,3 +17,5 @@ local.properties
 
 # vim swapfiles
 *.swp
+
+api_keys.xml
