@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import com.crittercism.app.Crittercism;
 
 public class AjapaikApplication extends Application implements LocationListener, SensorEventListener {
 	
@@ -31,6 +32,7 @@ public class AjapaikApplication extends Application implements LocationListener,
 		super.onCreate();
 		self = this;
 		uiHandler = new Handler(Looper.getMainLooper());
+		Crittercism.init(getApplicationContext(), getString(R.string.crittercism_id));
 	}
 	
 	
