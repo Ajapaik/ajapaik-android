@@ -129,7 +129,7 @@ public class ConfirmFragment extends Fragment {
 				HttpParams params = new BasicHttpParams();
 				params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 				DefaultHttpClient httpClient = new DefaultHttpClient(params);
-				HttpPost post = new HttpPost(String.format("http://www.ajapaik.ee/foto/%d/upload/", id));
+				HttpPost post = new HttpPost(String.format("http://ajapaik.ee:8002/foto/%d/upload/", id));
 				
 				MultipartEntity entity = new ProgressMultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, this);
 				
