@@ -7,5 +7,6 @@ package ee.ajapaik.android;
  * Time: 10:21 PM
  */
 public interface Constants {
-	public static final String BACKEND_DOMAIN = "www.ajapaik.ee";
+	public static final String API_HOST = "api.ajapaik.ee";
+	public static final String BACKEND_HOST = "staging.ajapaik.ee";
 }

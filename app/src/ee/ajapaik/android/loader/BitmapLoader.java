@@ -40,7 +40,7 @@ public class BitmapLoader extends CachingAsyncLoader<Bitmap> {
 	public Bitmap loadInBackground() {
 		InputStream is = null;
 		try {
-			URL url = new URL(String.format("http://%s/foto_url/%d/", Constants.BACKEND_DOMAIN, id));
+			URL url = new URL(String.format("http://%s/foto_url/%d/", Constants.BACKEND_HOST, id));
 			is = url.openStream();
 			Bitmap bmp = BitmapFactory.decodeStream(is);
 //			if (containerLand ^ bmp.getWidth() > bmp.getHeight()) {

@@ -218,6 +218,9 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 
 	@Override
 	public void onLoadFinished(Loader<Bitmap> arg0, Bitmap bmp) {
+		if (bmp == null) {
+			return;
+		}
 		rotated = (containerLand ^ (bmp.getHeight() < bmp.getWidth()));
 		if (rotated) {
 			bmp = rotate(bmp, 90.0f);

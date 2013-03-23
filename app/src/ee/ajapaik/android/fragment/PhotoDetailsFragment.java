@@ -40,7 +40,7 @@ public class PhotoDetailsFragment extends Fragment {
 		
 		final int id = getActivity().getIntent().getIntExtra(DetailsActivity.EXTRA_ID, -1);
 		
-		imageFetcher.loadImage(String.format("http://%s/foto_url/%d/", Constants.BACKEND_DOMAIN, id), (ImageView) v.findViewById(R.id.oldPic));
+		imageFetcher.loadImage(String.format("http://%s/foto_url/%d/", Constants.BACKEND_HOST, id), (ImageView) v.findViewById(R.id.oldPic));
 		
 		v.findViewById(R.id.oldPic).setOnClickListener(new OnClickListener() {
 			@Override
