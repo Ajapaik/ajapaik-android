@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import ee.ajapaik.android.Constants;
 
 public class BitmapLoader extends CachingAsyncLoader<Bitmap> {
 	
@@ -39,7 +40,7 @@ public class BitmapLoader extends CachingAsyncLoader<Bitmap> {
 	public Bitmap loadInBackground() {
 		InputStream is = null;
 		try {
-			URL url = new URL(String.format("http://www.ajapaik.ee/foto_url/%d/", id));
+			URL url = new URL(String.format("http://%s/foto_url/%d/", Constants.BACKEND_DOMAIN, id));
 			is = url.openStream();
 			Bitmap bmp = BitmapFactory.decodeStream(is);
 //			if (containerLand ^ bmp.getWidth() > bmp.getHeight()) {

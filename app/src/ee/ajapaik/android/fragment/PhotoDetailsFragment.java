@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ee.ajapaik.android.Constants;
 import ee.ajapaik.android.external.bitmaputil.ImageFetcher;
 
 import ee.ajapaik.android.CameraActivity;
@@ -39,7 +40,7 @@ public class PhotoDetailsFragment extends Fragment {
 		
 		final int id = getActivity().getIntent().getIntExtra(DetailsActivity.EXTRA_ID, -1);
 		
-		imageFetcher.loadImage(String.format("http://www.ajapaik.ee/foto_url/%d/", id), (ImageView) v.findViewById(R.id.oldPic));
+		imageFetcher.loadImage(String.format("http://%s/foto_url/%d/", Constants.BACKEND_DOMAIN, id), (ImageView) v.findViewById(R.id.oldPic));
 		
 		v.findViewById(R.id.oldPic).setOnClickListener(new OnClickListener() {
 			@Override

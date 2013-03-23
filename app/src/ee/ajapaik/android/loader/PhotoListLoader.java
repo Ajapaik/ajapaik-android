@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import ee.ajapaik.android.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,7 @@ public class PhotoListLoader extends CachingAsyncLoader<MarkerOptions[]> {
 	public MarkerOptions[] loadInBackground() {
 		InputStream is = null;
 		try {
-			URL url = new URL(String.format("http://api.ajapaik.ee/api-v1.php?action=photo&latitude=%.6f&longitude=%.6f", latitude, longitude));
+			URL url = new URL(String.format("http://%s/api-v1.php?action=photo&latitude=%.6f&longitude=%.6f", Constants.BACKEND_DOMAIN, latitude, longitude));
 			Log.d(TAG, "Firing request to " + url);
 			is = url.openStream();
 			is = new BufferedInputStream(is, 8096);
