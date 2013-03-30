@@ -40,7 +40,7 @@ public class PhotoListLoader extends CachingAsyncLoader<MarkerOptions[]> {
 	public MarkerOptions[] loadInBackground() {
 		InputStream is = null;
 		try {
-			URL url = new URL(String.format("http://%s/api-v1.php?action=photo&latitude=%.6f&longitude=%.6f", Constants.API_HOST, latitude, longitude));
+			URL url = new URL(String.format("http://%s/%s?action=photo&latitude=%.6f&longitude=%.6f", Constants.API_HOST, Constants.API_PATH, latitude, longitude));
 			Log.d(TAG, "Firing request to " + url);
 			is = url.openStream();
 			is = new BufferedInputStream(is, 8096);
