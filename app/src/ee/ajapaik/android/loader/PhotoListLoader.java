@@ -32,8 +32,8 @@ public class PhotoListLoader extends CachingAsyncLoader<MarkerOptions[]> {
 		super(context);
 		this.latitude = latitude;
 		this.longitude = longitude;
-		dRephotoed = BitmapDescriptorFactory.fromResource(R.drawable.icon_camera_hot);
-		dNotRephotoed = BitmapDescriptorFactory.fromResource(R.drawable.icon_camera);
+		dRephotoed = BitmapDescriptorFactory.fromResource(R.drawable.marker_blue);
+		dNotRephotoed = BitmapDescriptorFactory.fromResource(R.drawable.marker_black);
 	}
 
 	@Override
@@ -64,6 +64,7 @@ public class PhotoListLoader extends CachingAsyncLoader<MarkerOptions[]> {
 				boolean rephotoed = Integer.valueOf(obj.optString("rephoto_count")) != 0;
 				ret[i] = new MarkerOptions()
 					.icon(rephotoed ? dRephotoed : dNotRephotoed)
+					.anchor(0.5f, 1.0f)
 					.position(new LatLng(latitude, longitude))
 					.title(description).snippet(String.valueOf(id)); // oh man, a hack
 			}
