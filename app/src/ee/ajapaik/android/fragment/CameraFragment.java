@@ -9,6 +9,7 @@ import java.util.Date;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -92,6 +93,18 @@ public class CameraFragment extends Fragment implements Camera.ShutterCallback, 
 			}
 		}
 		Log.d(TAG, "Settled for " + params.getPictureSize().width + "x" + params.getPictureSize().height);
+
+		if (params.getPictureFormat() != ImageFormat.JPEG) {
+			for (int i : params.getSupportedPictureFormats()) {
+				Log.d(TAG, "supportedImageFormat=" + i);
+				// try to fall back to JPEG
+				if (i == ImageFormat.JPEG) {
+					params.setPictureFormat(ImageFormat.JPEG);
+					break;
+				}
+			}
+		}
+
 		camera.setParameters(params);
 		setCameraDisplayOrientation(getActivity(), 0, camera);
 		CameraPreview prev = new CameraPreview(getActivity(), camera);
