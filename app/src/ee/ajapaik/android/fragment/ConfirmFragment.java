@@ -69,7 +69,7 @@ public class ConfirmFragment extends Fragment {
 		
 		View v = inflater.inflate(R.layout.confirm, null);
 		
-		imageFetcher.loadImage(String.format("http://%s/foto_url/%d/", Constants.BACKEND_HOST, id), (ImageView) v.findViewById(R.id.oldPic));
+		imageFetcher.loadImage(String.format("https://%s/foto_url/%d/", Constants.BACKEND_HOST, id), (ImageView) v.findViewById(R.id.oldPic));
 		
 		// grab the file. ui thread, don't care.
 		BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -127,7 +127,7 @@ public class ConfirmFragment extends Fragment {
 				HttpParams params = new BasicHttpParams();
 				params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 				DefaultHttpClient httpClient = new DefaultHttpClient(params);
-				HttpPost post = new HttpPost(String.format("http://%s/foto/%d/upload/", Constants.BACKEND_HOST, id));
+				HttpPost post = new HttpPost(String.format("https://%s/foto/%d/upload/", Constants.BACKEND_HOST, id));
 				
 				MultipartEntity entity = new ProgressMultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, this);
 				
